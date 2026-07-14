@@ -22,7 +22,11 @@
     });
   }
 
-  /* ---------- Scroll-reveal via IntersectionObserver ---------- */
+  /* ---------- Scroll-reveal via IntersectionObserver ----------
+     Elements are visible by default in CSS. We only opt an element
+     into the fade-in (by adding .reveal-pending) right before we
+     start observing it, so if this script never runs at all
+     (blocked, slow CDN, error), the page still shows everything. */
   var revealEls = document.querySelectorAll("[data-reveal]");
 
   if ("IntersectionObserver" in window && revealEls.length) {
@@ -30,7 +34,7 @@
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
+            entry.target.classList.remove("reveal-pending");
             observer.unobserve(entry.target);
           }
         });
@@ -39,14 +43,12 @@
     );
 
     revealEls.forEach(function (el) {
+      el.classList.add("reveal-pending");
       observer.observe(el);
     });
-  } else {
-    // Fallback: no IntersectionObserver support
-    revealEls.forEach(function (el) {
-      el.classList.add("is-visible");
-    });
   }
+  // No IntersectionObserver support: elements stay at their default
+  // visible CSS state, so no fallback branch is needed.
 
   /* ---------- Active nav link on scroll ---------- */
   var sections = document.querySelectorAll("main section[id]");
@@ -58,17 +60,4 @@
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
             var id = entry.target.getAttribute("id");
-            navLinks.forEach(function (link) {
-              link.classList.toggle("active", link.getAttribute("href") === "#" + id);
-            });
-          }
-        });
-      },
-      { rootMargin: "-45% 0px -50% 0px" }
-    );
-
-    sections.forEach(function (section) {
-      navObserver.observe(section);
-    });
-  }
-})();
+            navLinks.forEach(function
