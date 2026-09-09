@@ -60,4 +60,17 @@
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
             var id = entry.target.getAttribute("id");
-            navLinks.forEach(function
+            navLinks.forEach(function (link) {
+              link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+            });
+          }
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+
+    sections.forEach(function (section) {
+      navObserver.observe(section);
+    });
+  }
+})();

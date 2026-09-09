@@ -323,6 +323,11 @@ img, svg { display: block; max-width: 100%; }
   margin-bottom: 12px;
 }
 .badge-row .badge { background: var(--surface); border: 1px solid var(--surface-border); color: var(--text-muted); }
+.badge-row .badge.badge-ai {
+  background: rgba(45, 212, 191, 0.14);
+  border-color: var(--accent-dark);
+  color: var(--accent);
+}
 
 /* ---------- Skills ---------- */
 .skills-grid {
@@ -383,4 +388,12 @@ img, svg { display: block; max-width: 100%; }
 [data-reveal] {
   opacity: 1;
   transform: none;
-  transition: opacity 0
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+[data-reveal].reveal-pending {
+  opacity: 0;
+  transform: translateY(14px);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal].reveal-pending { opacity: 1; transform: none; }
+}
